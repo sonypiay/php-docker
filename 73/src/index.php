@@ -1,3 +1,3 @@
 <?php
 
-'Hello Docker. I using PHP ' . phpversion();
+echo 'Hello Docker. I using PHP ' . phpversion();
