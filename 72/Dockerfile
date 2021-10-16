@@ -37,18 +37,6 @@ RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --wi
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Add group
-RUN groupadd -g 1000 www
-
-RUN useradd -u 1000 -ms /bin/bash -g www www
-
-# Copy application folder
-COPY . /var/www/html
-
-# Copy existing permission from folder to Docker
-COPY --chown=www:www . /var/www/html
-RUN chown -R www-data:www-data /var/www/html
-
 # Enable apache2 modules
 RUN a2enmod proxy \
     proxy_http \
@@ -58,8 +46,3 @@ RUN a2enmod proxy \
     proxy_balancer \
     proxy_connect \
     ssl
-
-# CMD [ "sudo", "/etc/init.d/apache2", "reload" ]
-
-# Change current user to www
-USER www

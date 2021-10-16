@@ -1,0 +1,18 @@
+version: '3'
+
+networks:
+  local:
+
+services:
+
+  php72:
+    container_name: app_php72
+    image: sonypiay/webapp-php-apache:7.2
+    tty: true
+    ports:
+      - '8000:80'
+    volumes:
+      - ./72:/var/www/html
+    networks:
+      - local
+    restart: unless-stopped
