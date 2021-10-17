@@ -16,3 +16,15 @@ services:
     networks:
       - local
     restart: unless-stopped
+  
+  php73:
+    container_name: app_php73
+    image: sonypiay/webapp-php-apache:7.3
+    tty: true
+    ports:
+      - '8000:80'
+    volumes:
+      - ./73:/var/www/html
+    networks:
+      - local
+    restart: unless-stopped
