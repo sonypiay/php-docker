@@ -23,13 +23,13 @@ services:
     networks:
       - local
     restart: always
-    
+
   php74:
     container_name: app_php74
     image: sonypiay/php-apache:7.4
     tty: true
     ports:
-      - '82:80'
+      - '83:80'
     networks:
       - local
     restart: always
