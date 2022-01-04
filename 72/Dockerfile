@@ -1,11 +1,29 @@
 FROM php:7.2-apache
 
-COPY . /var/www/html
-WORKDIR /var/www/html/
+ENV DIRECTORY_SITES="/var/www/html"
+ENV DIRECTORY_APACHE="${APACHE_CONFDIR}/sites-available"
+ENV CONFIG_APACHE="${DIRECTORY_APACHE}/000-default.conf"
+ENV CONFIG_APACHE_SSL="${DIRECTORY_APACHE}/default-ssl.conf"
+# ENV EXPOSE_PORT=80
+# ENV EXPOSE_PORT_SSL=443
 
-# Install dependecies
-RUN apt-get update && apt-get upgrade -y \
-    build-essential \
+# Change directory to sites folder and copy all
+WORKDIR ${DIRECTORY_SITES}
+COPY src/* ${DIRECTORY_SITES}
+
+# change directory to apache configuration
+WORKDIR ${DIRECTORY_APACHE}
+COPY apache2/000-default.conf ${CONFIG_APACHE}
+COPY apache2/default-ssl.conf ${CONFIG_APACHE_SSL}
+
+RUN rm -rf apache2
+RUN rm -rf Dockerfile
+
+# update packages
+RUN apt-get -y update && apt-get -y upgrade
+
+# install packages
+RUN apt-get -y install build-essential \
     libpng-dev \
     libzip-dev \
     libjpeg62-turbo-dev \
@@ -17,6 +35,7 @@ RUN apt-get update && apt-get upgrade -y \
     vim \
     git \
     curl \
+    wget \
     supervisor
 
 # Clean cache
@@ -38,11 +57,7 @@ RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --wi
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Enable apache2 modules
-RUN a2enmod proxy \
-    proxy_http \
-    headers \
-    env \
-    rewrite \
-    proxy_balancer \
-    proxy_connect \
+RUN a2enmod rewrite \
     ssl
+
+# EXPOSE ${EXPOSE_PORT} ${EXPOSE_PORT_SSL}

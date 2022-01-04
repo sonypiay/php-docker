@@ -4,27 +4,22 @@ networks:
   local:
 
 services:
-
   php72:
     container_name: app_php72
-    image: sonypiay/webapp-php-apache:7.2
+    image: sonypiay/php-apache:7.2
     tty: true
     ports:
-      - '8000:80'
-    volumes:
-      - ./72:/var/www/html
+      - '81:80'
     networks:
       - local
-    restart: unless-stopped
+    restart: always
   
   php73:
     container_name: app_php73
-    image: sonypiay/webapp-php-apache:7.3
+    image: sonypiay/php-apache:7.3
     tty: true
     ports:
-      - '8000:80'
-    volumes:
-      - ./73:/var/www/html
+      - '82:80'
     networks:
       - local
-    restart: unless-stopped
+    restart: always
