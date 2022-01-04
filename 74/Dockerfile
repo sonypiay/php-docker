@@ -1,11 +1,12 @@
 FROM php:7.4-apache
 
+ENV TZ="Asia/Jakarta"
+RUN date
+
 ENV DIRECTORY_SITES="/var/www/html"
 ENV DIRECTORY_APACHE="${APACHE_CONFDIR}/sites-available"
 ENV CONFIG_APACHE="${DIRECTORY_APACHE}/000-default.conf"
 ENV CONFIG_APACHE_SSL="${DIRECTORY_APACHE}/default-ssl.conf"
-# ENV EXPOSE_PORT=80
-# ENV EXPOSE_PORT_SSL=443
 
 # Change directory to sites folder and copy all
 WORKDIR ${DIRECTORY_SITES}
@@ -18,8 +19,6 @@ COPY apache2/default-ssl.conf ${CONFIG_APACHE_SSL}
 
 RUN rm -rf apache2
 RUN rm -rf Dockerfile
-
-CMD [ "timedatectl","set-timezone","Asia/Jakarta" ]
 
 # update packages
 RUN apt-get -y update && apt-get -y upgrade
@@ -59,5 +58,3 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Enable apache2 modules
 RUN a2enmod rewrite \
     ssl
-
-# EXPOSE ${EXPOSE_PORT} ${EXPOSE_PORT_SSL}
