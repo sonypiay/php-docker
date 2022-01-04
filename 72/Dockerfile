@@ -19,6 +19,8 @@ COPY apache2/default-ssl.conf ${CONFIG_APACHE_SSL}
 RUN rm -rf apache2
 RUN rm -rf Dockerfile
 
+CMD [ "timedatectl","set-timezone","Asia/Jakarta" ]
+
 # update packages
 RUN apt-get -y update && apt-get -y upgrade
 

@@ -3,6 +3,14 @@ version: '3'
 networks:
   local:
 
+volumes:
+  storage_app_72:
+    driver: local
+  storage_app_73:
+    driver: local
+  storage_app_74:
+    driver: local
+
 services:
   php72:
     container_name: app_php72
@@ -13,6 +21,8 @@ services:
     networks:
       - local
     restart: always
+    volumes:
+      - storage_app_72:/var/www/html
   
   php73:
     container_name: app_php73
@@ -23,6 +33,8 @@ services:
     networks:
       - local
     restart: always
+    volumes:
+      - storage_app_73:/var/www/html
 
   php74:
     container_name: app_php74
@@ -33,3 +45,5 @@ services:
     networks:
       - local
     restart: always
+    volumes:
+      - storage_app_74:/var/www/html
