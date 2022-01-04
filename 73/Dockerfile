@@ -38,7 +38,7 @@ RUN apt-get -y install build-essential \
     curl \
     wget \
     supervisor \
-    systemd
+    cron
 
 # Clean cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
