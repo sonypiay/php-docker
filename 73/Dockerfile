@@ -9,22 +9,6 @@ ENV CONFIG_APACHE="${DIRECTORY_APACHE}/000-default.conf"
 ENV CONFIG_APACHE_SSL="${DIRECTORY_APACHE}/default-ssl.conf"
 ENV PHP_CONF="${PHP_INI_DIR}/conf.d"
 
-# Change directory to sites folder and copy all
-WORKDIR ${DIRECTORY_SITES}
-COPY src/* ${DIRECTORY_SITES}
-
-# change directory to apache configuration
-WORKDIR ${DIRECTORY_APACHE}
-COPY apache2/000-default.conf ${CONFIG_APACHE}
-COPY apache2/default-ssl.conf ${CONFIG_APACHE_SSL}
-
-WORKDIR ${PHP_CONF}
-COPY phpconf/php.ini ${PHP_CONF}/php.ini
-
-RUN rm -rf apache2
-RUN rm -rf Dockerfile
-RUN rm -rf phpconf
-
 # update packages
 RUN apt-get -y update && apt-get -y upgrade
 
@@ -66,3 +50,19 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Enable apache2 modules
 RUN a2enmod rewrite \
     ssl
+
+# change directory to apache configuration
+WORKDIR ${DIRECTORY_APACHE}
+COPY apache2/000-default.conf ${CONFIG_APACHE}
+COPY apache2/default-ssl.conf ${CONFIG_APACHE_SSL}
+
+WORKDIR ${PHP_CONF}
+COPY phpconf/php.ini ${PHP_CONF}/php.ini
+
+RUN rm -rf apache2
+RUN rm -rf Dockerfile
+RUN rm -rf phpconf
+
+# Change directory to sites folder and copy all
+WORKDIR ${DIRECTORY_SITES}
+COPY src/* ${DIRECTORY_SITES}
