@@ -7,6 +7,7 @@ ENV DIRECTORY_SITES="/var/www/html"
 ENV DIRECTORY_APACHE="${APACHE_CONFDIR}/sites-available"
 ENV CONFIG_APACHE="${DIRECTORY_APACHE}/000-default.conf"
 ENV CONFIG_APACHE_SSL="${DIRECTORY_APACHE}/default-ssl.conf"
+ENV PHP_CONF="${PHP_INI_DIR}/conf.d"
 
 # Change directory to sites folder and copy all
 WORKDIR ${DIRECTORY_SITES}
@@ -17,13 +18,17 @@ WORKDIR ${DIRECTORY_APACHE}
 COPY apache2/000-default.conf ${CONFIG_APACHE}
 COPY apache2/default-ssl.conf ${CONFIG_APACHE_SSL}
 
+WORKDIR ${PHP_CONF}
+COPY phpconf/php.ini ${PHP_CONF}/php.ini
+
 RUN rm -rf apache2
 RUN rm -rf Dockerfile
+RUN rm -rf phpconf
 
-# # update packages
+# update packages
 RUN apt-get -y update && apt-get -y upgrade
 
-# # install packages
+# install packages
 RUN apt-get -y install build-essential \
     libpng-dev \
     libzip-dev \
@@ -40,7 +45,7 @@ RUN apt-get -y install build-essential \
     supervisor \
     cron
 
-# # Clean cache
+# Clean cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # install extension
