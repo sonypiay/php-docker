@@ -32,6 +32,12 @@ RUN apt-get -y install build-essential \
 # Clean cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN docker-php-ext-configure gd \
+    --with-gd \
+    --with-freetype-dir=/usr/include/ \
+    --with-jpeg-dir=/usr/include/ \
+    --with-png-dir=/usr/include/
+
 # install extension
 RUN docker-php-ext-install \
     pdo \
@@ -43,7 +49,6 @@ RUN docker-php-ext-install \
     pcntl \
     gd
 
-RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
