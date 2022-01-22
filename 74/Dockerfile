@@ -1,8 +1,6 @@
 FROM php:7.4-apache
 
 ENV TZ="Asia/Jakarta"
-RUN date
-
 ENV DIRECTORY_SITES="/var/www/html"
 ENV DIRECTORY_APACHE="${APACHE_CONFDIR}/sites-available"
 ENV CONFIG_APACHE="${DIRECTORY_APACHE}/000-default.conf"
@@ -28,9 +26,6 @@ RUN apt-get -y install build-essential \
     wget \
     supervisor \
     cron
-
-# Clean cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure gd \
     --with-freetype=/usr/include/ \
