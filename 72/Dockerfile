@@ -31,11 +31,9 @@ RUN apt-get update && apt-get -y install build-essential \
     libfreetype6-dev \
     locales \
     jpegoptim optipng pngquant gifsicle \
-    libxml2-dev \
     unixodbc-dev \
     freetds-dev \
     libssl-dev \
-    openssl \
     libxml2-dev \
     libzip-dev \
     libmagickwand-dev \
