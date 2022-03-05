@@ -54,6 +54,7 @@ RUN docker-php-ext-configure gd \
         iconv \
         pdo \
         pdo_dblib \
+        pdo_mysql \
         mssql \
         mcrypt \
         zip \
