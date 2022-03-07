@@ -51,6 +51,7 @@ RUN docker-php-ext-configure gd \
     && docker-php-ext-configure intl \
     && pecl install sqlsrv-5.6.0 \
     && pecl install pdo_sqlsrv-5.6.0 \
+    && pecl install imagick \
     && docker-php-ext-install \
         iconv \
         intl \
@@ -65,7 +66,8 @@ RUN docker-php-ext-configure gd \
         gd \
     && docker-php-ext-enable \
         sqlsrv \
-        pdo_sqlsrv
+        pdo_sqlsrv \
+        imagick
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
