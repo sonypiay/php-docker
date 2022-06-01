@@ -7,7 +7,8 @@ ENV CONFIG_APACHE="${DIRECTORY_APACHE}/000-default.conf"
 ENV CONFIG_APACHE_SSL="${DIRECTORY_APACHE}/default-ssl.conf"
 ENV PHP_CONF="${PHP_INI_DIR}/conf.d"
 
-RUN apt-get upgrade
+RUN apt-get upgrade \
+    && apt-get update
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
 		apt-utils \
@@ -65,6 +66,7 @@ RUN docker-php-ext-configure gd \
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN service cron start
 
 # Enable apache2 modules
 RUN a2enmod rewrite \
