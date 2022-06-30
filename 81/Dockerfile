@@ -1,14 +1,16 @@
 FROM php:8.1-apache
 
 ENV TZ="Asia/Jakarta"
+RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
+
 ENV DIRECTORY_SITES="/var/www/html"
 ENV DIRECTORY_APACHE="${APACHE_CONFDIR}/sites-available"
 ENV CONFIG_APACHE="${DIRECTORY_APACHE}/000-default.conf"
 ENV CONFIG_APACHE_SSL="${DIRECTORY_APACHE}/default-ssl.conf"
 ENV PHP_CONF="${PHP_INI_DIR}/conf.d"
 
-RUN apt-get upgrade \
-    && apt-get update
+RUN apt-get update \
+    && apt-get -y upgrade
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
         apt-utils \
