@@ -1,4 +1,4 @@
-FROM php:8.0-apache
+FROM php:8.0.25-apache
 
 ENV TZ="Asia/Jakarta"
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
