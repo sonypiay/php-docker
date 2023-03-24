@@ -34,6 +34,7 @@ RUN apt-get update && apt-get -y install build-essential \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
     locales \
+    locales-all \
     jpegoptim optipng pngquant gifsicle \
     unixodbc-dev \
     freetds-dev \
