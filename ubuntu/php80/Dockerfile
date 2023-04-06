@@ -76,6 +76,7 @@ RUN apt -y install php${PHP_VERSION} \
     php${PHP_VERSION}-pdo-mysql \
     php${PHP_VERSION}-snmp \
     php${PHP_VERSION}-redis \
+    php${PHP_VERSION}-memcached \
     php-pear
 
 # install pre requisites
@@ -96,7 +97,7 @@ RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
 RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 RUN exec bash
 
-RUN phpenmod -v ${PHP_VERSION} sqlsrv pdo_sqlsrv imap redis
+RUN phpenmod -v ${PHP_VERSION} sqlsrv pdo_sqlsrv imap redis memcached
 
 RUN ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libsybdb.so /usr/lib/
