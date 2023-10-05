@@ -107,7 +107,9 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Enable apache2 modules
 RUN a2enmod rewrite \
-    ssl
+    ssl \
+    headers \
+    expires
 
 # change directory to apache configuration
 WORKDIR ${SITES_AVAILABLE}
