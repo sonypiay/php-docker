@@ -53,8 +53,8 @@ RUN docker-php-ext-configure gd \
         --with-png-dir=/usr/include/ \
     && docker-php-ext-configure pdo_dblib --with-libdir=/lib/x86_64-linux-gnu \
     && docker-php-ext-configure intl \
-    && pecl install sqlsrv-5.6.1 \
-    && pecl install pdo_sqlsrv-5.6.1 \
+    && pecl install sqlsrv-5.6.0 \
+    && pecl install pdo_sqlsrv-5.6.0 \
     && pecl install imagick \
     && docker-php-ext-install \
         iconv \

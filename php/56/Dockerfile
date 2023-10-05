@@ -53,6 +53,8 @@ RUN docker-php-ext-configure gd \
     && docker-php-ext-configure pdo_dblib \
     && docker-php-ext-configure mcrypt \
     && docker-php-ext-configure iconv \
+    && pecl install sqlsrv-5.6.0 \
+    && pecl install pdo_sqlsrv-5.6.0 \
     && docker-php-ext-install \
         iconv \
         pdo \
@@ -64,7 +66,10 @@ RUN docker-php-ext-configure gd \
         mbstring \
         exif \
         pcntl \
-        gd
+        gd \
+    && docker-php-ext-enable \
+        sqlsrv \
+        pdo_sqlsrv
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
