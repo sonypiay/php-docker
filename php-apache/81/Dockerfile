@@ -40,7 +40,11 @@ RUN apt-get update && apt-get -y install build-essential \
     libssl-dev \
     openssl \
     libmagickwand-dev \
-    imagemagick
+    imagemagick \
+    libz-dev \
+    libmemcached-tools \
+    libmemcached-dev \
+    libpq-dev
 
 RUN apt-get -y update && apt-get clean
 RUN ACCEPT_EULA=Y apt-get install -y \
@@ -53,24 +57,31 @@ RUN docker-php-ext-configure gd \
         --with-jpeg=/usr/include/ \
     && docker-php-ext-configure pdo_dblib --with-libdir=/lib/x86_64-linux-gnu \
     && docker-php-ext-configure intl \
-    && pecl install sqlsrv-5.10.0 \
-    && pecl install pdo_sqlsrv-5.10.0 \
+    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+    && pecl install sqlsrv-5.10.1 \
+    && pecl install pdo_sqlsrv-5.10.1 \
     && pecl install imagick \
+    && pecl install redis \
+    && pecl install memcached \
     && docker-php-ext-install \
         iconv \
         intl \
         pdo \
         pdo_mysql \
         pdo_dblib \
+        pdo_pgsql \
         mysqli \
         zip \
         exif \
         pcntl \
         gd \
+        pgsql \
     && docker-php-ext-enable \
         sqlsrv \
         pdo_sqlsrv \
-        imagick
+        imagick \
+        redis \
+        memcached
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
