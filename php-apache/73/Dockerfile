@@ -9,10 +9,8 @@ ENV CONFIG_APACHE="${DIRECTORY_APACHE}/000-default.conf"
 ENV CONFIG_APACHE_SSL="${DIRECTORY_APACHE}/default-ssl.conf"
 ENV PHP_CONF="${PHP_INI_DIR}/conf.d"
 
-RUN apt -y update \
-    && apt -y upgrade
-
-RUN apt -y update && apt install --no-install-recommends -y \
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y install --no-install-recommends \
         apt-utils \
         wget \
         gnupg \
@@ -22,10 +20,12 @@ RUN apt -y update && apt install --no-install-recommends -y \
         curl \
         apt-transport-https \
         vim \
-        supervisor \
-        cron
+        supervisor
 
-RUN apt -y update && apt -y install build-essential \
+RUN curl https://packages.microsoft.com/keys/microsoft.asc | tee /etc/apt/trusted.gpg.d/microsoft.asc
+RUN curl https://packages.microsoft.com/config/debian/11/prod.list | tee /etc/apt/sources.list.d/mssql-release.list
+
+RUN apt-get -y update && apt-get -y install build-essential \
     libpng-dev \
     libzip-dev \
     libjpeg62-turbo-dev \
@@ -44,11 +44,8 @@ RUN apt -y update && apt -y install build-essential \
     libmemcached-dev \
     libpq-dev
 
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | tee /etc/apt/trusted.gpg.d/microsoft.asc
-RUN curl https://packages.microsoft.com/config/debian/11/prod.list | tee /etc/apt/sources.list.d/mssql-release.list
-
-RUN apt -y update && apt clean
 RUN ACCEPT_EULA=Y apt install -y msodbcsql17 mssql-tools
+RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN docker-php-ext-configure gd \
         --with-gd \
@@ -86,7 +83,6 @@ RUN docker-php-ext-configure gd \
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN service cron start
 
 # Enable apache2 modules
 RUN a2enmod rewrite
