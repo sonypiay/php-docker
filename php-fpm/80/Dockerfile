@@ -1,7 +1,7 @@
 FROM php:8.0-fpm
 
 ENV TZ="Asia/Jakarta"
-ENV PHP_CONF="${PHP_INI_DIR}/conf.d"
+ENV PHP_FPM_DIR="/usr/local/etc/php-fpm.d"
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
 RUN apt-get -y update && apt-get -y upgrade
@@ -78,6 +78,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN rm -rf Dockerfile
 RUN rm -rf phpconf
 
-WORKDIR ${PHP_CONF}
-COPY phpconf/php.ini ${PHP_CONF}/php.ini
-COPY phpconf/www.conf ${PHP_CONF}/php-fpm.d/www.conf
+WORKDIR ${PHP_INI_DIR}
+COPY phpconf/php.ini ${PHP_INI_DIR}/php.ini
+COPY phpconf/www.conf ${PHP_FPM_DIR}/www.conf
