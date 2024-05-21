@@ -7,7 +7,6 @@ ENV DIRECTORY_SITES="/var/www/html"
 ENV DIRECTORY_APACHE="${APACHE_CONFDIR}/sites-available"
 ENV CONFIG_APACHE="${DIRECTORY_APACHE}/000-default.conf"
 ENV CONFIG_APACHE_SSL="${DIRECTORY_APACHE}/default-ssl.conf"
-ENV PHP_CONF="${PHP_INI_DIR}/conf.d"
 
 RUN apt-get update \
     && apt-get -y upgrade
@@ -84,8 +83,8 @@ WORKDIR ${DIRECTORY_APACHE}
 COPY apache2/000-default.conf ${CONFIG_APACHE}
 COPY apache2/default-ssl.conf ${CONFIG_APACHE_SSL}
 
-WORKDIR ${PHP_CONF}
-COPY phpconf/php.ini ${PHP_CONF}/php.ini
+WORKDIR ${PHP_INI_DIR}
+COPY phpconf/php.ini ${PHP_INI_DIR}/php.ini
 
 RUN rm -rf apache2
 RUN rm -rf Dockerfile
