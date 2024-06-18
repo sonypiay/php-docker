@@ -13,7 +13,6 @@ RUN apt-get -y install --no-install-recommends \
         apt-utils \
         wget \
         gnupg \
-        git \
         zip \
         unzip \
         curl \
@@ -42,7 +41,8 @@ RUN apt-get -y update && apt-get -y install build-essential \
     libz-dev \
     libmemcached-tools \
     libmemcached-dev \
-    libpq-dev
+    libpq-dev \
+    poppler-utils
 
 RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17 mssql-tools
 RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

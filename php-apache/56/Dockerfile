@@ -15,7 +15,6 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 		apt-utils \
         wget \
         gnupg \
-        git \
         zip \
         unzip \
         curl \
@@ -38,7 +37,8 @@ RUN apt-get update && apt-get -y install build-essential \
     tdsodbc \
     libct4 \
     libsybdb5 \
-    libmcrypt-dev
+    libmcrypt-dev \
+    poppler-utils
 
 RUN ln -s /usr/lib/x86_64-linux-gnu/libsybdb.a /usr/lib/ \
     && ln -s /usr/lib/x86_64-linux-gnu/libsybdb.so /usr/lib/
