@@ -16,13 +16,11 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt -y update && apt -y upgrade
 RUN apt install -y software-properties-common
-RUN add-apt-repository ppa:ondrej/php
 
 RUN apt -y update && apt install --no-install-recommends -y \
 	apt-utils \
     wget \
     gnupg \
-    git \
     zip \
     unzip \
     curl \
@@ -48,42 +46,42 @@ RUN apt -y update && apt -y install build-essential \
     libct4 \
     libsybdb5 \
     libmcrypt-dev \
-    imagemagick
+    imagemagick \
+    poppler-utils
 
-RUN apt -y install php${PHP_VERSION} \
-    php${PHP_VERSION}-dev \
-    php${PHP_VERSION}-imap \
-    php${PHP_VERSION}-cli \
-    php${PHP_VERSION}-bz2 \
-    php${PHP_VERSION}-zip \
-    php${PHP_VERSION}-curl \
-    php${PHP_VERSION}-gd \
-    php${PHP_VERSION}-mysql \
-    php${PHP_VERSION}-mysqli \
-    php${PHP_VERSION}-bcmath \
-    php${PHP_VERSION}-xml \
-    php${PHP_VERSION}-xmlrpc \
-    php${PHP_VERSION}-dev \
-    php${PHP_VERSION}-mbstring \
-    php${PHP_VERSION}-iconv \
-    php${PHP_VERSION}-pdo \
-    php${PHP_VERSION}-mcrypt \
-    php${PHP_VERSION}-exif \
-    php${PHP_VERSION}-interbase \
-    php${PHP_VERSION}-imagick \
-    php${PHP_VERSION}-tidy \
-    php${PHP_VERSION}-pdo-dblib \
-    php${PHP_VERSION}-pdo-mysql \
-    php${PHP_VERSION}-snmp \
-    php${PHP_VERSION}-redis \
-    php${PHP_VERSION}-memcached \
+RUN apt -y install php \
+    php-dev \
+    php-imap \
+    php-cli \
+    php-bz2 \
+    php-zip \
+    php-curl \
+    php-gd \
+    php-mysql \
+    php-mysqli \
+    php-bcmath \
+    php-xml \
+    php-xmlrpc \
+    php-mbstring \
+    php-iconv \
+    php-pdo \
+    php-exif \
+    php-interbase \
+    php-imagick \
+    php-tidy \
+    php-pdo-dblib \
+    php-pdo-mysql \
+    php-snmp \
+    php-redis \
+    php-memcached \
     php-pear
 
 # install pre requisites
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 RUN curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list > /etc/apt/sources.list.d/mssql-release.list
 RUN apt update
-RUN ACCEPT_EULA=Y apt install -y msodbcsql17 mssql-tools unixodbc-dev
+RUN ACCEPT_EULA=Y apt install -y msodbcsql18 mssql-tools unixodbc-dev
+RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # install driver sqlsrv
 RUN pecl install sqlsrv-${SQLSRV_DRIVER_VERSION}
@@ -91,10 +89,9 @@ RUN printf "; priority=20\nextension=sqlsrv.so\n" > /etc/php/${PHP_VERSION}/mods
 RUN pecl install pdo_sqlsrv-${SQLSRV_DRIVER_VERSION}
 RUN printf "; priority=30\nextension=pdo_sqlsrv.so\n" > /etc/php/${PHP_VERSION}/mods-available/pdo_sqlsrv.ini
 
-
 # install ODBC Driver
-RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
-RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+RUN echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bash_profile
+RUN echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bashrc
 RUN exec bash
 
 RUN phpenmod -v ${PHP_VERSION} sqlsrv pdo_sqlsrv imap redis memcached

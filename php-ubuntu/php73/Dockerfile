@@ -22,7 +22,6 @@ RUN apt -y update && apt install --no-install-recommends -y \
 	apt-utils \
     wget \
     gnupg \
-    git \
     zip \
     unzip \
     curl \
@@ -48,7 +47,8 @@ RUN apt -y update && apt -y install build-essential \
     libct4 \
     libsybdb5 \
     libmcrypt-dev \
-    imagemagick
+    imagemagick \
+    poppler-utils
 
 RUN apt -y install php${PHP_VERSION} \
     php${PHP_VERSION}-dev \
@@ -84,6 +84,7 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 RUN curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list > /etc/apt/sources.list.d/mssql-release.list
 RUN apt update
 RUN ACCEPT_EULA=Y apt install -y msodbcsql17 mssql-tools unixodbc-dev
+RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # install driver sqlsrv
 RUN pecl install sqlsrv-${SQLSRV_DRIVER_VERSION}

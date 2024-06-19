@@ -1,8 +1,8 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ENV TZ="Asia/Jakarta"
 ENV PHP_VERSION=8.0
-ENV SQLSRV_DRIVER_VERSION=5.9.0
+ENV SQLSRV_DRIVER_VERSION=5.10.1
 ENV PHP_CONF_DIR="/etc/php/${PHP_VERSION}"
 ENV PHP_CONF_APACHE="${PHP_CONF_DIR}/apache2"
 ENV PHP_CONF_CLI="${PHP_CONF_DIR}/cli"
@@ -22,7 +22,6 @@ RUN apt -y update && apt install --no-install-recommends -y \
 	apt-utils \
     wget \
     gnupg \
-    git \
     zip \
     unzip \
     curl \
@@ -48,7 +47,8 @@ RUN apt -y update && apt -y install build-essential \
     libct4 \
     libsybdb5 \
     libmcrypt-dev \
-    imagemagick
+    imagemagick \
+    poppler-utils
 
 RUN apt -y install php${PHP_VERSION} \
     php${PHP_VERSION}-dev \
@@ -83,7 +83,8 @@ RUN apt -y install php${PHP_VERSION} \
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
 RUN curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list > /etc/apt/sources.list.d/mssql-release.list
 RUN apt update
-RUN ACCEPT_EULA=Y apt install -y msodbcsql17 mssql-tools unixodbc-dev
+RUN ACCEPT_EULA=Y apt install -y msodbcsql18 mssql-tools unixodbc-dev
+RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # install driver sqlsrv
 RUN pecl install sqlsrv-${SQLSRV_DRIVER_VERSION}
@@ -93,8 +94,8 @@ RUN printf "; priority=30\nextension=pdo_sqlsrv.so\n" > /etc/php/${PHP_VERSION}/
 
 
 # install ODBC Driver
-RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
-RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+RUN echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bash_profile
+RUN echo 'export PATH="$PATH:/opt/mssql-tools18/bin"' >> ~/.bashrc
 RUN exec bash
 
 RUN phpenmod -v ${PHP_VERSION} sqlsrv pdo_sqlsrv imap redis memcached

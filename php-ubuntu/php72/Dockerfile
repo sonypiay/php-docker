@@ -22,7 +22,6 @@ RUN apt -y update && apt install --no-install-recommends -y \
 	apt-utils \
     wget \
     gnupg \
-    git \
     zip \
     unzip \
     curl \
@@ -48,7 +47,8 @@ RUN apt -y update && apt -y install build-essential \
     libct4 \
     libsybdb5 \
     libmcrypt-dev \
-    imagemagick
+    imagemagick \
+    poppler-utils
 
 RUN apt -y install php${PHP_VERSION} \
     php${PHP_VERSION}-dev \
