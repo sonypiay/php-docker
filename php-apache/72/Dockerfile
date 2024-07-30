@@ -85,7 +85,10 @@ RUN docker-php-ext-configure gd \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Enable apache2 modules
-RUN a2enmod rewrite
+RUN a2enmod rewrite \
+    ssl \
+    headers \
+    expires
 
 # change directory to apache configuration
 WORKDIR ${DIRECTORY_APACHE}
