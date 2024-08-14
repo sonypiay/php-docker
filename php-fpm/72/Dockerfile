@@ -4,17 +4,14 @@ ENV TZ="Asia/Jakarta"
 ENV PHP_FPM_DIR="/usr/local/etc/php-fpm.d"
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
-RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get -y install --no-install-recommends \
+RUN apt-get -y update && apt-get -y install --no-install-recommends \
         apt-utils \
         wget \
         gnupg \
         zip \
         unzip \
         curl \
-        apt-transport-https \
-        vim \
-        supervisor
+        vim
 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | tee /etc/apt/trusted.gpg.d/microsoft.asc
 RUN curl https://packages.microsoft.com/config/debian/9/prod.list | tee /etc/apt/sources.list.d/mssql-release.list
@@ -82,7 +79,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN rm -rf Dockerfile
 RUN rm -rf phpconf
-
 
 WORKDIR ${PHP_INI_DIR}
 COPY phpconf/php.ini ${PHP_INI_DIR}/php.ini
