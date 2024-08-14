@@ -1,24 +1,17 @@
 FROM php:8.1
 
 ENV TZ="Asia/Jakarta"
-ENV PHP_CONF="${PHP_INI_DIR}/conf.d"
+ENV PHP_CONF="${PHP_INI_DIR}"
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
-
-RUN apt-get update \
-    && apt-get -y upgrade
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
         apt-utils \
         wget \
         gnupg \
-        git \
         zip \
         unzip \
         curl \
-        apt-transport-https \
-        vim \
-        supervisor \
-        cron
+        vim
 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | tee /etc/apt/trusted.gpg.d/microsoft.asc
 RUN curl https://packages.microsoft.com/config/debian/11/prod.list | tee /etc/apt/sources.list.d/mssql-release.list
@@ -80,7 +73,6 @@ RUN docker-php-ext-configure gd \
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN service cron start
 
 RUN rm -rf Dockerfile
 RUN rm -rf phpconf
