@@ -8,22 +8,18 @@ ENV DIRECTORY_APACHE="${APACHE_CONFDIR}/sites-available"
 ENV CONFIG_APACHE="${DIRECTORY_APACHE}/000-default.conf"
 ENV CONFIG_APACHE_SSL="${DIRECTORY_APACHE}/default-ssl.conf"
 
-RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y update
 RUN apt-get -y install --no-install-recommends \
-        apt-utils \
-        wget \
         gnupg \
         zip \
         unzip \
         curl \
-        apt-transport-https \
-        vim \
-        supervisor
+        vim
 
 RUN curl https://packages.microsoft.com/keys/microsoft.asc | tee /etc/apt/trusted.gpg.d/microsoft.asc
 RUN curl https://packages.microsoft.com/config/debian/11/prod.list | tee /etc/apt/sources.list.d/mssql-release.list
 
-RUN apt-get -y update && apt-get -y install build-essential \
+RUN apt-get -y update && apt-get -y install \
     libpng-dev \
     libzip-dev \
     libjpeg62-turbo-dev \
@@ -31,9 +27,6 @@ RUN apt-get -y update && apt-get -y install build-essential \
     locales \
     jpegoptim optipng pngquant gifsicle \
     libxml2-dev \
-    freetds-dev \
-    libssl-dev \
-    openssl \
     libmagickwand-dev \
     imagemagick \
     libz-dev \
@@ -48,7 +41,6 @@ RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 RUN docker-php-ext-configure gd \
         --with-freetype=/usr/include/ \
         --with-jpeg=/usr/include/ \
-    && docker-php-ext-configure pdo_dblib --with-libdir=/lib/x86_64-linux-gnu \
     && docker-php-ext-configure intl \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && pecl install sqlsrv-5.12.0 \
@@ -61,7 +53,6 @@ RUN docker-php-ext-configure gd \
         intl \
         pdo \
         pdo_mysql \
-        pdo_dblib \
         pdo_pgsql \
         mysqli \
         zip \

@@ -5,8 +5,6 @@ ENV PHP_FPM_DIR="/usr/local/etc/php-fpm.d"
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
-        apt-utils \
-        wget \
         gnupg \
         zip \
         unzip \
@@ -25,8 +23,6 @@ RUN apt-get -y update && apt-get -y install build-essential \
     locales-all \
     jpegoptim optipng pngquant gifsicle \
     unixodbc-dev \
-    freetds-dev \
-    libssl-dev \
     libxml2-dev \
     libzip-dev \
     libmagickwand-dev \
@@ -45,20 +41,18 @@ RUN docker-php-ext-configure gd \
         --with-freetype-dir=/usr/include/ \
         --with-jpeg-dir=/usr/include/ \
         --with-png-dir=/usr/include/ \
-    && docker-php-ext-configure pdo_dblib --with-libdir=/lib/x86_64-linux-gnu \
     && docker-php-ext-configure intl \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && pecl install sqlsrv-5.6.1 \
     && pecl install pdo_sqlsrv-5.6.1 \
-    && pecl install imagick \
-    && pecl install redis \
+    && pecl install imagick-3.4.4 \
+    && pecl install redis-5.3.7 \
     && pecl install memcached \
     && docker-php-ext-install \
         iconv \
         intl \
         pdo \
         pdo_mysql \
-        pdo_dblib \
         pdo_pgsql \
         mysqli \
         zip \
