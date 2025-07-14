@@ -6,7 +6,6 @@ RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezo
 ENV DIRECTORY_SITES="/var/www/html"
 ENV DIRECTORY_APACHE="${APACHE_CONFDIR}/sites-available"
 ENV CONFIG_APACHE="${DIRECTORY_APACHE}/000-default.conf"
-ENV CONFIG_APACHE_SSL="${DIRECTORY_APACHE}/default-ssl.conf"
 
 RUN apt-get -y update
 RUN apt-get -y install --no-install-recommends \
@@ -67,6 +66,7 @@ RUN docker-php-ext-configure gd \
         pcntl \
         gd \
         pgsql \
+        opcache \
     && docker-php-ext-enable \
         sqlsrv \
         pdo_sqlsrv \
@@ -85,11 +85,17 @@ RUN a2enmod rewrite \
 
 # change directory to apache configuration
 WORKDIR ${DIRECTORY_APACHE}
+RUN mkdir -p ${DIRECTORY_APACHE}/certs
 COPY apache2/000-default.conf ${CONFIG_APACHE}
-COPY apache2/default-ssl.conf ${CONFIG_APACHE_SSL}
 
 WORKDIR ${PHP_INI_DIR}
 COPY phpconf/php.ini ${PHP_INI_DIR}/php.ini
+RUN mkdir -p ${PHP_INI_DIR}/session
+RUN chown -R www-data:www-data ${PHP_INI_DIR}/session
+RUN mkdir -p ${PHP_INI_DIR}/temp
+RUN chown -R www-data:www-data ${PHP_INI_DIR}/temp
+RUN mkdir -p ${PHP_INI_DIR}/opcache
+RUN chown -R www-data:www-data ${PHP_INI_DIR}/opcache
 
 RUN rm -rf apache2
 RUN rm -rf Dockerfile
