@@ -19,6 +19,7 @@ RUN apt-get -y update && apt-get -y install build-essential \
     libzip-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
+    libwebp-dev \
     locales \
     jpegoptim optipng pngquant gifsicle \
     libxml2-dev \
@@ -36,6 +37,7 @@ RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/*
 RUN docker-php-ext-configure gd \
         --with-freetype=/usr/include/ \
         --with-jpeg=/usr/include/ \
+        --with-webp=/usr/include/ \
     && docker-php-ext-configure intl \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && pecl install sqlsrv-5.12.0 \
