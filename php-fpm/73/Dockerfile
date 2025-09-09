@@ -19,10 +19,10 @@ RUN apt-get -y update && apt-get -y install build-essential \
     libzip-dev \
     libjpeg62-turbo-dev \
     libfreetype6-dev \
+    libwebp-dev \
     locales \
     jpegoptim optipng pngquant gifsicle \
     libxml2-dev \
-    unixodbc-dev \
     libmagickwand-dev \
     imagemagick \
     libz-dev \
@@ -31,7 +31,7 @@ RUN apt-get -y update && apt-get -y install build-essential \
     libpq-dev \
     poppler-utils
 
-RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17 mssql-tools
+RUN ACCEPT_EULA=Y apt-get install -y msodbcsql17 mssql-tools unixodbc-dev
 RUN apt-get autoremove -y && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN docker-php-ext-configure gd \
@@ -39,10 +39,11 @@ RUN docker-php-ext-configure gd \
         --with-freetype-dir=/usr/include/ \
         --with-jpeg-dir=/usr/include/ \
         --with-png-dir=/usr/include/ \
+        --with-webp-dir=/usr/include/ \
     && docker-php-ext-configure intl \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && pecl install sqlsrv-5.6.1 \
-    && pecl install pdo_sqlsrv-5.6.1 \
+    && pecl install sqlsrv-5.8.1 \
+    && pecl install pdo_sqlsrv-5.8.1 \
     && pecl install imagick-3.4.4 \
     && pecl install redis-5.3.7 \
     && pecl install memcached \
@@ -59,6 +60,7 @@ RUN docker-php-ext-configure gd \
         pcntl \
         gd \
         pgsql \
+        opcache \
     && docker-php-ext-enable \
         sqlsrv \
         pdo_sqlsrv \
