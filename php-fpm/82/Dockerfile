@@ -57,6 +57,8 @@ RUN docker-php-ext-configure gd \
         pcntl \
         gd \
         pgsql \
+        opcache \
+        sockets \
     && docker-php-ext-enable \
         sqlsrv \
         pdo_sqlsrv \
