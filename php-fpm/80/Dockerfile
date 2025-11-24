@@ -71,5 +71,8 @@ RUN rm -rf Dockerfile
 RUN rm -rf phpconf
 
 WORKDIR ${PHP_INI_DIR}
+RUN mkdir -p session
+RUN mkdir -p temp
+RUN mkdir -p opcache
 COPY phpconf/php.ini ${PHP_INI_DIR}/php.ini
 COPY phpconf/www.conf ${PHP_FPM_DIR}/www.conf
