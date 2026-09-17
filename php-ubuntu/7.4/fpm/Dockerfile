@@ -74,6 +74,18 @@ RUN mv ${PHP_CONF_FPM}/php-fpm.conf ${PHP_CONF_FPM}/php-fpm.conf.origin
 RUN mkdir -p /var/log/php-fpm
 RUN chown -R www-data:www-data /var/log/php-fpm
 
+RUN mkdir -p /var/lib/php
+RUN mkdir -p /var/lib/php/tmp
+RUN mkdir -p /var/lib/php/sessions
+RUN mkdir -p /var/lib/php/cache
+RUN mkdir -p /var/lib/php/opcache
+RUN chown www-data:www-data /var/lib/php
+RUN chown -R www-data:www-data \
+    /var/lib/php/tmp \
+    /var/lib/php/sessions \
+    /var/lib/php/cache \
+    /var/lib/php/opcache
+
 COPY ./cli/php.ini ${PHP_CONF_CLI}/php.ini
 COPY ./fpm/php.ini ${PHP_CONF_FPM}/php.ini
 COPY ./fpm/pool.d/. ${PHP_CONF_FPM}/pool.d/.
