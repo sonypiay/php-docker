@@ -14,16 +14,14 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y update
 
 RUN apt-get -y install \
     software-properties-common \
     ca-certificates \
     lsb-release \
     apt-transport-https \
-    zip \
     imagemagick \
-    vim \
     libpng-dev \
     libzip-dev \
     libfreetype6-dev \
@@ -31,9 +29,7 @@ RUN apt-get -y install \
     locales-all \
     jpegoptim optipng pngquant gifsicle \
     libmcrypt-dev \
-    wget \
-    apt-utils \
-    gnupg
+    zip
     
 # add repository php
 RUN add-apt-repository -y ppa:ondrej/php
@@ -92,6 +88,7 @@ COPY ./fpm/pool.d/. ${PHP_CONF_FPM}/pool.d/.
 COPY ./fpm/php-fpm.conf ${PHP_CONF_FPM}/php-fpm.conf
 
 RUN mkdir -p ${WWWROOT}
+WORKDIR ${WWWROOT}
 
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
