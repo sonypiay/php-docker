@@ -47,6 +47,7 @@ RUN apt-get -y update && apt-get -y install --no-install-recommends \
     libzip-dev \
     zlib1g-dev \
     unixodbc-dev \
+    libtool \
     $PHPIZE_DEPS
 
 RUN ACCEPT_EULA=Y apt-get install -y --no-install-recommends $MICROSOFT_ODBCSQL_NAME
