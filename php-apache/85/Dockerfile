@@ -23,8 +23,8 @@ RUN apt-get -y update && apt-get -y install --no-install-recommends \
     curl
 
 RUN mkdir -p /etc/apt/keyrings
-RUN curl -fsSL ${MICROSOFT_PACKAGE_URL}/keys/microsoft.asc | gpg --dearmor -o ${MICROSOFT_KEYS_PATH}
-RUN curl ${MICROSOFT_PACKAGE_URL}/config/${MICROSOFT_OS_PACKAGE}/prod.list | tee ${MICROSOFT_RELEASE_PACKAGE_PATH}
+RUN curl -fsSL "${MICROSOFT_PACKAGE_URL}/keys/microsoft.asc" | gpg --dearmor -o ${MICROSOFT_KEYS_PATH}
+RUN curl "${MICROSOFT_PACKAGE_URL}/config/${MICROSOFT_OS_PACKAGE}/prod.list" | tee ${MICROSOFT_RELEASE_PACKAGE_PATH}
 
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
     libfreetype6-dev \
