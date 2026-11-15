@@ -82,7 +82,7 @@ ENV PHP_FPM_DIR="/usr/local/etc/php-fpm.d"
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
 # Copy Microsoft repository configuration
-COPY --from=builder /etc/apt/keyrings/microsoft.gpg /usr/share/keyrings/microsoft-prod.gpg
+COPY --from=builder /usr/share/keyrings/microsoft-prod.gpg /usr/share/keyrings/microsoft-prod.gpg
 COPY --from=builder /etc/apt/sources.list.d/mssql-release.list /etc/apt/sources.list.d/mssql-release.list
 
 # Install runtime dependencies only
