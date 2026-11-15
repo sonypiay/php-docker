@@ -92,6 +92,11 @@ RUN pie install microsoft/sqlsrv:$MICROSOFT_SQLSRV_VERSION --no-dev --no-interac
 # ==========================================================
 FROM php:${PHP_VERSION}-${PHP_NAME}-${DEBIAN_VERSION} AS production
 
+# inherit global scope variable
+ARG MICROSOFT_KEYS_PATH
+ARG MICROSOFT_RELEASE_PACKAGE_PATH
+ARG MICROSOFT_ODBCSQL_NAME
+
 ENV TZ="Asia/Jakarta"
 ENV DIRECTORY_SITES="/var/www/html"
 ENV DIRECTORY_APACHE="${APACHE_CONFDIR}/sites-available"
