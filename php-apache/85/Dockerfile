@@ -15,6 +15,13 @@ ARG MICROSOFT_SQLSRV_VERSION=5.13.3
 # ==========================================================
 FROM php:${PHP_VERSION}-${PHP_NAME}-${DEBIAN_VERSION} AS builder
 
+# Inherit global scope variable
+ARG MICROSOFT_PACKAGE_URL
+ARG MICROSOFT_KEYS_PATH
+ARG MICROSOFT_RELEASE_PACKAGE_PATH
+ARG MICROSOFT_OS_PACKAGE
+ARG MICROSOFT_SQLSRV_VERSION
+
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
     gnupg \
     zip \
