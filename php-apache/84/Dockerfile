@@ -24,6 +24,8 @@ ARG MICROSOFT_OS_PACKAGE
 ARG MICROSOFT_SQLSRV_VERSION
 ARG MICROSOFT_ODBCSQL_NAME
 
+ENV ACCEPT_EULA=Y
+
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
     gnupg \
     zip \
@@ -97,6 +99,7 @@ ARG MICROSOFT_KEYS_PATH
 ARG MICROSOFT_RELEASE_PACKAGE_PATH
 ARG MICROSOFT_ODBCSQL_NAME
 
+ENV ACCEPT_EULA=Y
 ENV TZ="Asia/Jakarta"
 ENV DIRECTORY_SITES="/var/www/html"
 ENV DIRECTORY_APACHE="${APACHE_CONFDIR}/sites-available"
@@ -122,13 +125,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libwebp7 \
     libzip4 \
     unixodbc \
-    $MICROSOFT_ODBCSQL_NAME \
     jpegoptim \
     optipng \
     pngquant \
     gifsicle \
-    poppler-utils \
-    && rm -rf /var/lib/apt/lists/*
+    poppler-utils
+
+RUN ACCEPT_EULA=Y apt-get install -y --no-install-recommends $MICROSOFT_ODBCSQL_NAME
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Copy PHP extensions
 COPY --from=builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/

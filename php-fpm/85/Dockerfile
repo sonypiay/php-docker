@@ -16,6 +16,8 @@ ARG MICROSOFT_ODBCSQL_NAME=msodbcsql18
 # ==========================================================
 FROM php:${PHP_VERSION}-${PHP_NAME}-${DEBIAN_VERSION} AS builder
 
+ENV ACCEPT_EULA=Y
+
 # Inherit global scope variable
 ARG MICROSOFT_PACKAGE_URL
 ARG MICROSOFT_KEYS_PATH
@@ -119,13 +121,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libwebp7 \
     libzip4 \
     unixodbc \
-    $MICROSOFT_ODBCSQL_NAME \
     jpegoptim \
     optipng \
     pngquant \
     gifsicle \
-    poppler-utils \
-    && rm -rf /var/lib/apt/lists/*
+    poppler-utils
+
+RUN ACCEPT_EULA=Y apt-get install -y --no-install-recommends $MICROSOFT_ODBCSQL_NAME
+RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Copy PHP extensions
 COPY --from=builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
