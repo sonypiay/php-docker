@@ -23,8 +23,8 @@ RUN apt-get -y update && apt-get -y install --no-install-recommends \
     curl
 
 RUN mkdir -p /etc/apt/keyrings
-RUN curl -fsSL "${MICROSOFT_PACKAGE_URL}/keys/microsoft.asc" | gpg --dearmor -o ${MICROSOFT_KEYS_PATH}
-RUN curl "${MICROSOFT_PACKAGE_URL}/config/${MICROSOFT_OS_PACKAGE}/prod.list" | tee ${MICROSOFT_RELEASE_PACKAGE_PATH}
+RUN curl -fsSL $MICROSOFT_PACKAGE_URL/keys/microsoft.asc | gpg --dearmor -o $MICROSOFT_KEYS_PATH
+RUN curl $MICROSOFT_PACKAGE_URL/config/$MICROSOFT_OS_PACKAGE/prod.list | tee $MICROSOFT_RELEASE_PACKAGE_PATH
 
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
     libfreetype6-dev \
@@ -70,8 +70,8 @@ RUN docker-php-ext-install -j"$(nproc)" \
     sockets
 
 # install additional extensions
-RUN pie install microsoft/sqlsrv:${MICROSOFT_SQLSRV_VERSION} --no-dev --no-interaction \
-    && pie install microsoft/pdo_sqlsrv:${MICROSOFT_SQLSRV_VERSION} --no-dev --no-interaction \
+RUN pie install microsoft/sqlsrv:$MICROSOFT_SQLSRV_VERSION --no-dev --no-interaction \
+    && pie install microsoft/pdo_sqlsrv:$MICROSOFT_SQLSRV_VERSION --no-dev --no-interaction \
     && pie install imagick/imagick --no-dev --no-interaction \
     && pie install phpredis/phpredis --no-dev --no-interaction \
     && pie install php-memcached/php-memcached --no-dev --no-interaction \
@@ -90,8 +90,8 @@ ENV CONFIG_APACHE="${DIRECTORY_APACHE}/000-default.conf"
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
 # Copy Microsoft repository configuration
-COPY --from=builder ${MICROSOFT_KEYS_PATH} ${MICROSOFT_KEYS_PATH}
-COPY --from=builder ${MICROSOFT_RELEASE_PACKAGE_PATH} ${MICROSOFT_RELEASE_PACKAGE_PATH}
+COPY --from=builder $MICROSOFT_KEYS_PATH $MICROSOFT_KEYS_PATH
+COPY --from=builder $MICROSOFT_RELEASE_PACKAGE_PATH $MICROSOFT_RELEASE_PACKAGE_PATH
 
 # Install runtime dependencies only
 RUN apt-get update && apt-get install -y --no-install-recommends \
