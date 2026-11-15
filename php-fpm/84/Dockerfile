@@ -8,7 +8,7 @@ ARG MICROSOFT_PACKAGE_URL=https://packages.microsoft.com
 ARG MICROSOFT_KEYS_PATH=/usr/share/keyrings/microsoft-prod.gpg
 ARG MICROSOFT_RELEASE_PACKAGE_PATH=/etc/apt/sources.list.d/mssql-release.list
 ARG MICROSOFT_OS_PACKAGE=debian/12
-ARG MICROSOFT_SQLSRV_VERSION=5.13.0
+ARG MICROSOFT_SQLSRV_VERSION=5.13.3
 ARG MICROSOFT_ODBCSQL_NAME=msodbcsql17
 
 # ==========================================================
@@ -49,6 +49,7 @@ RUN apt-get -y update && apt-get -y install --no-install-recommends \
     libzip-dev \
     zlib1g-dev \
     unixodbc-dev \
+    libtool \
     $PHPIZE_DEPS
 
 RUN ACCEPT_EULA=Y apt-get install -y --no-install-recommends $MICROSOFT_ODBCSQL_NAME
