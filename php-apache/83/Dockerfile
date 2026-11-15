@@ -9,6 +9,7 @@ ARG MICROSOFT_KEYS_PATH=/usr/share/keyrings/microsoft-prod.gpg
 ARG MICROSOFT_RELEASE_PACKAGE_PATH=/etc/apt/sources.list.d/mssql-release.list
 ARG MICROSOFT_OS_PACKAGE=debian/12
 ARG MICROSOFT_SQLSRV_VERSION=5.12.0
+ARG MICROSOFT_ODBCSQL_NAME=msodbcsql17
 
 # ==========================================================
 # STAGE 1: BUILD
@@ -21,6 +22,7 @@ ARG MICROSOFT_KEYS_PATH
 ARG MICROSOFT_RELEASE_PACKAGE_PATH
 ARG MICROSOFT_OS_PACKAGE
 ARG MICROSOFT_SQLSRV_VERSION
+ARG MICROSOFT_ODBCSQL_NAME
 
 RUN apt-get -y update && apt-get -y install --no-install-recommends \
     gnupg \
@@ -47,7 +49,7 @@ RUN apt-get -y update && apt-get -y install --no-install-recommends \
     unixodbc-dev \
     $PHPIZE_DEPS
 
-RUN ACCEPT_EULA=Y apt-get install -y --no-install-recommends msodbcsql17
+RUN ACCEPT_EULA=Y apt-get install -y --no-install-recommends $MICROSOFT_ODBCSQL_NAME
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # install pie
@@ -115,7 +117,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libwebp7 \
     libzip4 \
     unixodbc \
-    msodbcsql17 \
+    $MICROSOFT_ODBCSQL_NAME \
     jpegoptim \
     optipng \
     pngquant \
