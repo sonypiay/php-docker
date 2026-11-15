@@ -9,7 +9,7 @@ ARG MICROSOFT_KEYS_PATH=/usr/share/keyrings/microsoft-prod.gpg
 ARG MICROSOFT_RELEASE_PACKAGE_PATH=/etc/apt/sources.list.d/mssql-release.list
 ARG MICROSOFT_OS_PACKAGE=debian/12
 ARG MICROSOFT_SQLSRV_VERSION=5.13.3
-ARG MICROSOFT_ODBCSQL_NAME=msodbcsql
+ARG MICROSOFT_ODBCSQL_NAME=msodbcsql18
 
 # ==========================================================
 # STAGE 1: BUILD
