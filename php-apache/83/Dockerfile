@@ -55,10 +55,6 @@ RUN apt-get -y update && apt-get -y install --no-install-recommends \
 RUN ACCEPT_EULA=Y apt-get install -y --no-install-recommends $MICROSOFT_ODBCSQL_NAME
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# install pie
-RUN curl -fL --output /tmp/pie.phar https://github.com/php/pie/releases/latest/download/pie.phar
-RUN mv /tmp/pie.phar /usr/local/bin/pie && chmod +x /usr/local/bin/pie
-
 RUN docker-php-ext-configure gd \
         --with-freetype=/usr/include/ \
         --with-jpeg=/usr/include/ \
@@ -83,12 +79,21 @@ RUN docker-php-ext-install -j"$(nproc)" \
     opcache
 
 # install additional extensions
-RUN pie install microsoft/sqlsrv:$MICROSOFT_SQLSRV_VERSION --no-dev --no-interaction \
-    && pie install microsoft/pdo_sqlsrv:$MICROSOFT_SQLSRV_VERSION --no-dev --no-interaction \
-    && pie install imagick/imagick --no-dev --no-interaction \
-    && pie install phpredis/phpredis --no-dev --no-interaction \
-    && pie install php-memcached/php-memcached --no-dev --no-interaction \
-    && pie install apcu/apcu --no-dev --no-interaction
+RUN pecl install sqlsrv-$MICROSOFT_SQLSRV_VERSION \
+    && pecl install pdo_sqlsrv-$MICROSOFT_SQLSRV_VERSION \
+    && pecl install imagick \
+    && pecl install redis \
+    && pecl install memcached \
+    && pecl install apcu
+
+# enable additional extensions
+RUN docker-php-ext-enable \
+    sqlsrv \
+    pdo_sqlsrv \
+    imagick \
+    redis \
+    memcached \
+    apcu
 
 # ==========================================================
 # STAGE 2: PRODUCTION
