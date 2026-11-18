@@ -12,6 +12,11 @@ ARG MICROSOFT_SQLSRV_VERSION=5.10.0
 ARG MICROSOFT_ODBCSQL_NAME=msodbcsql17
 
 # ==========================================================
+# Download Composer
+# ==========================================================
+FROM composer:latest AS composer
+
+# ==========================================================
 # STAGE 1: BUILD
 # ==========================================================
 FROM php:${PHP_VERSION}-${PHP_NAME}-${DEBIAN_VERSION} AS builder
@@ -139,6 +144,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN ACCEPT_EULA=Y apt-get install -y --no-install-recommends $MICROSOFT_ODBCSQL_NAME
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Copy composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
 
 # Copy PHP extensions
 COPY --from=builder /usr/local/lib/php/extensions/ /usr/local/lib/php/extensions/
